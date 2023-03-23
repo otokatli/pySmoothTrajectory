@@ -181,9 +181,11 @@ def straight_trajectory(
     # Map the given time to [0, 1] interval
     scaled_time = time_scaling(poly_coefs, time)
 
-    return np.array(
-        [
-            initial_conf @ sla.expm(sla.logm(la.inv(initial_conf) @ final_conf) * s)
-            for s in scaled_time
-        ]
-    )
+    # return np.array(
+    #     [
+    #         initial_conf @ sla.expm(sla.logm(la.inv(initial_conf) @ final_conf) * s)
+    #         for s in scaled_time
+    #     ]
+    # )
+
+    return initial_conf @ sla.expm(sla.logm(la.inv(initial_conf) @ final_conf) * scaled_time)
