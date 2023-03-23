@@ -125,18 +125,20 @@ class TestSmoothTrajectory(unittest.TestCase):
         t_0, t_1 = 0.0, 10.0
 
         # Polynomial coefficients of the smooting function
-        a = cubic_polynomial(t_0, t_1)
+        coeffs = cubic_polynomial(t_0, t_1)
 
         # Time vector
-        t = np.linspace(t_0, t_1, 1001)
+        time_vec = np.linspace(t_0, t_1, 1001)
 
         # Calculate the time scaling
-        s = time_scaling(a, t)
+        scaled_time = time_scaling(coeffs, time_vec)
 
-        self.assertEqual(s[0], 0.0)
-        self.assertTrue(np.abs(s[-1] - 1.0) < tol)
+        self.assertEqual(scaled_time[0], 0.0)
+        self.assertTrue(np.abs(scaled_time[-1] - 1.0) < tol)
 
     def test_straight_trajectory(self):
+        """Test the straight trajectory function"""
+
         initial_configuration = np.eye(4)
         final_configuration = np.array(
             [
