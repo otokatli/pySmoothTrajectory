@@ -6,6 +6,7 @@ test_linear_polynomial()
 test_cubic_polynomial()
 test_quintic_polynomial()
 test_time_scaling()
+test_straight_trajectory()
 
 """
 
@@ -13,7 +14,7 @@ import unittest
 import numpy as np
 import numpy.testing as npt
 from smooth_trajectory.trajectory import linear_polynomial, cubic_polynomial, quintic_polynomial, \
-    time_scaling
+    time_scaling, straight_trajectory
 
 
 class TestSmoothTrajectory(unittest.TestCase):
@@ -29,6 +30,8 @@ class TestSmoothTrajectory(unittest.TestCase):
         Test the quinctic smoothing polynomial
     test_time_scaling()
         Test the time scaling function
+    test_straight_trajectory()
+        Test the straight trajectory function
 
     """
 
@@ -100,3 +103,17 @@ class TestSmoothTrajectory(unittest.TestCase):
         
         self.assertEqual(s[0], 0.0)
         self.assertTrue(np.abs(s[-1] - 1.0) < tol)
+    
+    def test_straight_trajectory(self):
+        initial_configuration = np.eye(4)
+        final_configuration = np.array([[1.0, 0.0, 0.0, 0.10], [0.0, 1.0, 0.0, 0.0], [0.0, 0.0, 1.0, 0.0], [0.0, 0.0, 0.0, 1.0]])
+
+        t_initial = 0.0
+        t_final = 4.0
+
+        # Calculate the smoothing polynomial coefficients
+        coefficients = cubic_polynomial(t_initial, t_final)
+
+        # Check position on the trajectory for initial time
+        npt.assert_almost_equal(straight_trajectory(t_initial, coefficients, initial_configuration, final_configuration), initial_configuration)
+        npt.assert_almost_equal(straight_trajectory(t_final, coefficients, initial_configuration, final_configuration), final_configuration)
