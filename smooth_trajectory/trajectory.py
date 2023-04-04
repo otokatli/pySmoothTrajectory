@@ -156,6 +156,8 @@ def straight_trajectory(
     -------
     (np.ndarray): Configuration represented in SE(3) at time t
 
+    TODO check the second return value (twist) and add to the docstring
+
     """
 
     # Map the given time to [0, 1] interval
@@ -169,3 +171,28 @@ def straight_trajectory(
         @ sla.expm(sla.logm(la.inv(initial_conf) @ final_conf) * scaled_time)
         * d_scaled_time,
     )
+
+def joint_trajectory(t: float, poly: np.polynomial.Polynomial, initial_pos: float, final_pos: float) -> float:
+    """Straight trajectory in joint space
+    
+    Create a smooth straight line trajectory in Eucledean space
+
+    Parameters
+    ----------
+    t (float): Time value
+    poly (np.polynomial.Polynomial): The smoothing polynomial for the time scaling
+    initial_pos (float): Initial position in Euclidean space
+    final_pos (float): Final position in Euclidean space
+
+    Returns
+    -------
+    (float): Position on the straight trajectory
+    (float): Velocity on the straight trajectory
+    
+    """
+
+    # Map the given time to [0, 1] interval
+    scaled_time, d_scaled_time = _time_scaling(t, poly)
+
+    return (initial_pos + scaled_time * (final_pos - initial_pos),
+            d_scaled_time * (final_pos - initial_pos))
