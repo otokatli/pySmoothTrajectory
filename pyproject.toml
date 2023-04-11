@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "smooth_trajectory"
-version = "0.0.6"
+version = "0.1.0"
 authors = [
   { name="Ozan Tokatli", email="ozan.tokatli@gmail.com" },
 ]
@@ -17,6 +17,10 @@ classifiers = [
     "Operating System :: OS Independent",
     "Development Status :: 3 - Alpha",
     "Intended Audience :: Science/Research",
+]
+dependencies = [
+    'numpy',
+    'scipy',
 ]
 
 [project.urls]
